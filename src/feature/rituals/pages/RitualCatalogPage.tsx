@@ -1,9 +1,10 @@
 import { useRituals } from "../hooks/useRituals";
 import RitualCard from "../components/RitualCard";
 import Pagination from "@/shared/common/Pagination";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/shared/components/ui/input";
 import { useDebounce } from "@/shared/hooks/useDebounce";
+import { useSearchParams } from "react-router-dom";
 
 function RitualCatalogPage() {
   let [page, setPage] = useState(1);
@@ -11,18 +12,50 @@ function RitualCatalogPage() {
   // const [inputChanged, setInputChanged] = useState("");
   const [isHot, setIsHot] = useState<boolean | undefined>(undefined);
 
-  const debouncedSearch = useDebounce(inputValue, 500);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchInput, setSearchInput] = useState(
+    searchParams.get("search") || "",
+  );
+
+  const debouncedSearch = useDebounce(searchInput, 500);
 
   const { rituals, isLoading, isError, error, refetch, pagination } =
-    useRituals({ page: page, search: debouncedSearch, isHot: isHot });
+    useRituals({
+      page: Number(searchParams.get("page")) || 1,
+      search: searchParams.get("search") || undefined,
+      isHot: Boolean(searchParams.get("trending")) || undefined,
+      limit: Number(searchParams.get("limit")) || 6,
+    });
 
   const handlePageChange = (pageNumber: number) => {
-    setPage(pageNumber);
+    const params = new URLSearchParams(searchParams);
+    params.set("page", String(pageNumber));
+    setSearchParams(params);
   };
 
-  // const handleSearchInput = () => {
-  //   setInputChanged(inputValue);
-  // };
+  const handleFilterChange = (key: string, value: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+    params.set("page", "1");
+    setSearchParams(params);
+  };
+
+  useEffect(() => {
+    if (debouncedSearch !== searchParams.get("search")) {
+      const params = new URLSearchParams(searchParams);
+      if (debouncedSearch) {
+        params.set("search", debouncedSearch);
+      } else {
+        params.delete("search");
+      }
+      params.set("page", "1");
+      setSearchParams(params);
+    }
+  }, [debouncedSearch]);
 
   // if (isLoading) return <p>Đang loading</p>;
 
@@ -40,21 +73,22 @@ function RitualCatalogPage() {
       <div className="flex items-center justify-between p-4">
         <Input
           placeholder="search"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
         />
         {/* <Button onClick={handleSearchInput}>Search</Button> */}
       </div>
       <select
         name=""
         id=""
-        value={isHot?.toString() || ""}
+        value={searchParams.get("trending") || ""}
         onChange={(e) => {
           const value = e.target.value;
 
-          if (value === "true") setIsHot(true);
-          else if (value === "false") setIsHot(false);
-          else setIsHot(undefined);
+          // if (value === "true") setIsHot(true);
+          // else if (value === "false") setIsHot(false);
+          // else setIsHot(undefined);
+          handleFilterChange("trending", value);
         }}
       >
         <option value="">All</option>
