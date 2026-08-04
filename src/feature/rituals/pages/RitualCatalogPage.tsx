@@ -7,10 +7,10 @@ import { useDebounce } from "@/shared/hooks/useDebounce";
 import { useSearchParams } from "react-router-dom";
 
 function RitualCatalogPage() {
-  let [page, setPage] = useState(1);
-  const [inputValue, setInputValue] = useState("");
-  // const [inputChanged, setInputChanged] = useState("");
-  const [isHot, setIsHot] = useState<boolean | undefined>(undefined);
+  // let [page, setPage] = useState(1);
+  // const [inputValue, setInputValue] = useState("");
+  // // const [inputChanged, setInputChanged] = useState("");
+  // const [isHot, setIsHot] = useState<boolean | undefined>(undefined);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchInput, setSearchInput] = useState(

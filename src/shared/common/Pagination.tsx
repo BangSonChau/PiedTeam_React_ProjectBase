@@ -17,7 +17,7 @@ interface PaginationProps {
 
 //className dùng có thể override lại syle của pagination component
 
-function Pagination({ meta, onPageChange, className }: PaginationProps) {
+function Pagination({ meta, onPageChange }: PaginationProps) {
   const { currentPage, totalPages, hasPreviousPage, hasNextPage } = meta;
 
   if (totalPages <= 1) return null; //nếu chỉ có 1 trang thì không hiển thị pagination

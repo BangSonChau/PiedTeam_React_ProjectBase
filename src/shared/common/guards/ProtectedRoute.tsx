@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/feature/auth/store";
-import type { Role } from "@/feature/auth/type";
+import type { Role } from "@/shared/type";
 import { Navigate, useLocation } from "react-router-dom";
 
 interface ProtectedRouteProps {

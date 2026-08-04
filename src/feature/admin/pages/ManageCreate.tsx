@@ -1,5 +1,3 @@
-import React from 'react'
-
 function ManageCreate() {
   return (
     <div>ManageCreate</div>
