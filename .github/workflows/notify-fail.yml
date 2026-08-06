@@ -21,7 +21,7 @@ jobs:
         run: |
           if [ -z "DISCORD_WEBHOOK_URL" ]; then
             echo "DISCORD_WEBHOOK_URL is empty. Skipping notification."
-          else 0
+            exit 0
           fi
 
           payload=$(cat <<PAYLOAD
