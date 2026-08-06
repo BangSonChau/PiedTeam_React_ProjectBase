@@ -17,17 +17,17 @@ jobs:
       LOG_URL: ${{ github.event.workflow_run.html_url }}
 
     steps:
-      - name: Send Discord notification
+      - name: Send Discord Notification
         run: |
-          if [ -z "DISCORD_WEBHOOK_URL" ]; then
-            echo "DISCORD_WEBHOOK_URL is empty. Skipping notification."
+          if [ -z "$DISCORD_WEBHOOK_URL" ]; then
+            echo "DISCORD_WEBHOOK_URL is empty. Skip notify step."
             exit 0
           fi
 
-          payload=$(cat <<PAYLOAD
+          payload=$(cat << PAYLOAD
           {
-            "username": "CI Bot",
-            "content": "CI pipeline failed for repository: **${REPO}** on branch: **${BRANCH}**. Triggered by: **${ACTOR}**. [View Logs](${LOG_URL})"
+            "username": "CI Bot Check",
+            "content": "CI workflow failed\nRepo: ${REPO}\nBranch: ${BRANCH}\nTriggered by: ${ACTOR}\nLogs: ${LOG_URL}"
           }
           PAYLOAD
           )
