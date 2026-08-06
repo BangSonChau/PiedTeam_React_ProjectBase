@@ -55,7 +55,7 @@ function RitualCatalogPage() {
       params.set("page", "1");
       setSearchParams(params);
     }
-  }, [debouncedSearch]);
+  }, [debouncedSearch, searchParams, setSearchParams]);
 
   // if (isLoading) return <p>Đang loading</p>;
 

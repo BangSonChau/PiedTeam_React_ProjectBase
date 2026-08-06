@@ -68,7 +68,8 @@ function Pagination({ meta, onPageChange }: PaginationProps) {
             <PaginationItem key={page}>
               <PaginationLink
                 onClick={(e) => {
-                  (e.preventDefault(), onPageChange(page));
+                  e.preventDefault();
+                  onPageChange(page);
                 }}
                 isActive={currentPage === page}
                 className="cursor-pointer"
